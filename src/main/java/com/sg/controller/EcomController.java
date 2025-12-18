@@ -72,7 +72,11 @@ public class EcomController {
 	    return "login";
 	}
 	
-	
+	@GetMapping("/")
+	public String home() {
+	    return "index"; 
+	}
+
 
 
 
