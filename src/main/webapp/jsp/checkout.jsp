@@ -1,13 +1,15 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Checkout - E-ShopX</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/eshop.css">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/css/cart.css">
 </head>
 <body>
+
+<%@ include file="/jsp/header.jsp" %>
 
 <div class="checkout-page">
 
@@ -15,37 +17,40 @@
 
     <div class="checkout-container">
 
-        
-        <form action="/place-order" method="post" class="billing-card">
+        <!-- BILLING DETAILS -->
+        <form class="billing-card" method="post" action="/place-order">
 
             <h3>Billing Details</h3>
 
-            <label>Name</label>
+            <label>Full Name</label>
             <input type="text" name="name" required>
 
-            <label>Mobile</label>
-            <input type="text" name="mobile" required>
+            <label>Phone</label>
+            <input type="text" name="phone" required>
 
             <label>Address</label>
-            <textarea name="address" rows="4" required></textarea>
+            <textarea name="address" rows="3" required></textarea>
 
             <button type="submit" class="btn-primary">
                 Place Order
             </button>
+
         </form>
 
-       
+        <!-- ORDER SUMMARY -->
         <div class="summary-card">
-
             <h3>Order Summary</h3>
+
+            <c:set var="total" value="0"/>
 
             <c:forEach var="item" items="${cart}">
                 <div class="summary-item">
-                    <span>${item.product.name}</span>
-                    <span>
-                        ₹${item.product.price} × ${item.quantity}
-                    </span>
+                    <span>${item.product.name} × ${item.quantity}</span>
+                    <span>₹ ${item.product.price * item.quantity}</span>
                 </div>
+
+                <c:set var="total"
+                       value="${total + (item.product.price * item.quantity)}"/>
             </c:forEach>
 
             <hr>
@@ -59,6 +64,8 @@
     </div>
 
 </div>
+
+<%@ include file="/jsp/footer.jsp" %>
 
 </body>
 </html>

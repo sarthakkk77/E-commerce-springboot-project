@@ -13,26 +13,30 @@
 		    <%@ include file="/jsp/header.jsp" %>
 
 		    
-		    <div class="home-hero">
-		        <div class="hero-content">
-		            <h1>Welcome to E-ShopX</h1>
-		            <p>Buy quality products at best prices. Simple. Fast. Secure.</p>
+			<section class="hero">
+			  <div class="hero-content">
+			    <h1>Shop Smart.<br>Live Better.</h1>
+			    <p>Premium products. Trusted quality. Fast delivery across India.</p>
+			    <a href="/products" class="btn-primary">Start Shopping</a>
+			  </div>
+			  
+			  <div class="hero-image">
+			      <img src="/images/shop-hero1.png" alt="Shopping illustration">
+			    </div>
+			</section>
+			
+			<section class="featured">
+			  <h2>Featured Products</h2>
+			  <p class="sub-text">Handpicked products just for you</p>
 
-		            <a href="${pageContext.request.contextPath}/products" class="hero-btn">
-		                Shop Now
-		            </a>
-		        </div>
-		    </div>
+			  <div class="featured-box">
+			    <p>More exciting products coming soon..</p>
+			  </div>
+			</section>
+
 
 		    
-		    <div class="home-section">
-		        <h2 class="section-title">Featured Products</h2>
-
-		        <c:if test="${empty productList}">
-		            <div class="empty-state">
-		                Products will appear here soon.
-		            </div>
-		        </c:if>
+		    
 
 		        <c:if test="${not empty productList}">
 		            <div class="product-grid">
@@ -71,6 +75,9 @@
 		    </div>
 
 		    <%@ include file="/jsp/footer.jsp" %>
+			
+			
+			
 
 
 </body>

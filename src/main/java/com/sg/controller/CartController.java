@@ -47,14 +47,26 @@ public class CartController {
 
 
     @GetMapping("/cart")
-    public String showCart(HttpSession session,
-                           org.springframework.ui.Model model) {
+    public String showCart(HttpSession session, Model model) {
 
-        model.addAttribute("cart",
-            session.getAttribute("cart"));
+        List<CartItem> cart =
+            (List<CartItem>) session.getAttribute("cart");
+
+        double totalAmount = 0;
+
+        if (cart != null) {
+            for (CartItem item : cart) {
+                totalAmount += item.getProduct().getPrice()
+                               * item.getQuantity();
+            }
+        }
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalAmount", totalAmount);
 
         return "cart";
     }
+
     
     @GetMapping("/checkout")
     public String checkout(HttpSession session, Model model) {
@@ -85,6 +97,53 @@ public class CartController {
         model.addAttribute("msg", "Order placed successfully!");
 
         return "order-success";
+    }
+    
+    @GetMapping("/cart/increase/{id}")
+    public String increaseQty(@PathVariable int id, HttpSession session) {
+
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+
+        if (cart != null) {
+            for (CartItem item : cart) {
+                if (item.getProduct().getId() == id) {
+                    item.setQuantity(item.getQuantity() + 1);
+                    break;
+                }
+            }
+        }
+        session.setAttribute("cart", cart);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/cart/decrease/{id}")
+    public String decreaseQty(@PathVariable int id, HttpSession session) {
+
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+
+        if (cart != null) {
+            cart.removeIf(item -> {
+                if (item.getProduct().getId() == id) {
+                    item.setQuantity(item.getQuantity() - 1);
+                    return item.getQuantity() <= 0;
+                }
+                return false;
+            });
+        }
+        session.setAttribute("cart", cart);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/cart/remove/{id}")
+    public String removeItem(@PathVariable int id, HttpSession session) {
+
+        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+
+        if (cart != null) {
+            cart.removeIf(item -> item.getProduct().getId() == id);
+        }
+        session.setAttribute("cart", cart);
+        return "redirect:/cart";
     }
 
 
