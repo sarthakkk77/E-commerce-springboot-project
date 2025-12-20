@@ -16,6 +16,7 @@ import com.sg.model.Order;
 import com.sg.model.OrderItem;
 import com.sg.model.Product;
 import com.sg.model.User;
+import com.sg.service.OrderItemService;
 import com.sg.service.OrderService;
 import com.sg.service.ProductService;
 
@@ -32,6 +33,10 @@ public class CartController {
     
     @Autowired
     OrderDao orderDao;
+    
+    @Autowired
+    OrderItemService orderItemService;
+
     
     @GetMapping("/add-to-cart/{id}")
     public String addToCart(@PathVariable Integer id, HttpSession session) {
@@ -139,38 +144,47 @@ public class CartController {
     @PostMapping("/place-order")
     public String placeOrder(HttpSession session) {
 
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) return "redirect:/login";
+
         List<CartItem> cart =
             (List<CartItem>) session.getAttribute("cart");
-
-        if (cart == null || cart.isEmpty()) {
+        if (cart == null || cart.isEmpty())
             return "redirect:/cart";
-        }
 
+       
         Order order = new Order();
+        order.setUserId(user.getUserId());
         order.setStatus("PLACED");
 
-        List<OrderItem> items = new ArrayList<>();
         double total = 0;
-
         for (CartItem c : cart) {
-            OrderItem oi = new OrderItem();
-            oi.setProductName(c.getProduct().getName());
-            oi.setPrice(c.getProduct().getPrice());
-            oi.setQuantity(c.getQuantity());
-
             total += c.getProduct().getPrice() * c.getQuantity();
-            items.add(oi);
         }
-
-        order.setItems(items);
         order.setTotalAmount(total);
 
-        orderService.saveOrder(order);
+        orderService.saveOrder(order); 
+        for (CartItem c : cart) {
 
+            OrderItem oi = new OrderItem(); 
+
+            oi.setOrder(order);            
+            oi.setProductName(c.getProduct().getName());
+            oi.setQuantity(c.getQuantity());
+            oi.setPrice(c.getProduct().getPrice());
+
+            orderItemService.save(oi);
+        }
+
+       
         session.removeAttribute("cart");
 
-        return "redirect:/orders";
+        
+        return "redirect:/order-success";
+
     }
+
+
 
 
     @GetMapping("/cart/increase/{id}")
@@ -220,7 +234,13 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    @GetMapping("/order-success")
+    public String orderSuccess() {
+        return "order-success";
+    }
+
+    }
 
 
 
-}
+

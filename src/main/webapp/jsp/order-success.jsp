@@ -19,6 +19,9 @@
         <a href="/products" class="btn-primary">
             Continue Shopping
         </a>
+		<a href="/orders" class="nav-btn" style="margin-top:20px;">
+		        View My Orders
+		    </a>
     </div>
 </div>
 

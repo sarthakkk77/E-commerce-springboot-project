@@ -50,6 +50,12 @@
             </div>
 
         </div>
+		<c:if test="${empty orders}">
+		    <p style="text-align:center;color:#666;">
+		        No orders found
+		    </p>
+		</c:if>
+
     </c:forEach>
 </div>
 

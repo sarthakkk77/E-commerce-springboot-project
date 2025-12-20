@@ -5,7 +5,7 @@
 		<html>
 		<head>
 		    <meta charset="UTF-8">
-		    <title>Index - E-ShopX</title>
+		    <title> E-ShopX</title>
 		    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/eshop.css">
 		</head>
 		<body>

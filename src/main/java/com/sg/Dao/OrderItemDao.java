@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.sg.model.Order;
+import com.sg.model.OrderItem;
 
 @Repository
-public interface OrderDao extends JpaRepository<Order, Integer> {
-
-    List<Order> findByUserId(Integer userId);
+public interface OrderItemDao extends JpaRepository<OrderItem, Integer> {
+    List<OrderItem> findByOrder(Order order);
 }
+
+
