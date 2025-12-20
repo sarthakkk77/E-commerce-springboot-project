@@ -21,29 +21,35 @@
 
         <p class="login-sub">Login to continue shopping</p>
 
-        <form class="login-form">
+		<form class="login-form"
+		      action="/verify-login"
+		      method="post">
 
-            <div class="input-group">
-                <input type="email" required>
-                <label>Email Address</label>
-            </div>
+		    <div class="input-group">
+		        <input type="email"
+		               name="email"
+		               required>
+		        <label>Email Address</label>
+		    </div>
 
-            <div class="input-group">
-                <input type="password" required>
-                <label>Password</label>
-            </div>
+		    <div class="input-group">
+		        <input type="password"
+		               name="password"
+		               required>
+		        <label>Password</label>
+		    </div>
 
-            <button type="submit" class="login-btn">
-                Login
-            </button>
+		    <button type="submit" class="login-btn">
+		        Login
+		    </button>
 
-            <p class="login-footer">
-                Don’t have an account?
-				<a href="/register-page">Create one</a>
+		    <p class="login-footer">
+		        Don’t have an account?
+		        <a href="/register-page">Create one</a>
+		    </p>
 
-            </p>
+		</form>
 
-        </form>
 
     </div>
 

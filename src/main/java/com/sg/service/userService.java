@@ -16,35 +16,22 @@ public class userService {
 
 	@Autowired
 	UserDao userDao;
-	public void registerUser(User user) {
-		
-		userDao.save(user);
-	}
 	
-	  public boolean verifyLogin(String username, String password) {
-
-	        if (username == null || password == null) {
-	            return false;
-	        }
-
-	        List<User> users = userDao.findAll();
-
-	        for (User u : users) {
-	            System.out.println("DB row -> username=" + u.getUsername()
-	                    + ", password=" + u.getPassword());
-
-	            if (u.getUsername() == null || u.getPassword() == null) {
-	                continue;
-	            }
-
-	            if (u.getUsername().equals(username) &&
-	                u.getPassword().equals(password)) {
-	                return true;
-	            }
-	        }
-
-	        return false;
+	 public void registerUser(User user) {
+	        userDao.save(user);
 	    }
-	
-        
+	 public User verifyLogin(String email, String password) {
+
+		    Optional<User> opt = userDao.findByEmail(email);
+
+		    if (opt.isPresent()) {
+		        User user = opt.get();
+
+		        if (user.getPassword().equals(password)) {
+		            return user;
+		        }
+		    }
+		    return null;
+		}
+
 }

@@ -26,6 +26,10 @@ public class ProductService {
 	public Product getProductById(Integer id) {
 	    return productDao.findById(id).orElse(null);
 	}
+	
+	public void saveProduct(Product product) {
+	    productDao.save(product);
+	}
 
 
 }

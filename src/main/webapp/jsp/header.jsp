@@ -2,7 +2,7 @@
 
 <header class="nav-header">
 
-  <!-- LEFT : LOGO -->
+
   <div class="nav-left">
 	<div class="logo-box">
 	    <img src="/images/logo.png" class="logo-img" alt="Logo">
@@ -11,7 +11,7 @@
 
   </div>
 
-  <!-- CENTER : SEARCH -->
+  
   <div class="nav-center">
     <form class="search-modern">
       <input type="text" placeholder="Search products..." />
@@ -22,7 +22,6 @@
     </form>
   </div>
 
-  <!-- RIGHT : NAV -->
   <div class="nav-right">
 
     <a href="/" class="nav-link">Home</a>
@@ -31,8 +30,29 @@
     <a href="/cart" class="cart-wrap">
       <img src="/images/cart2.png" class="cart-png">
     </a>
+	<c:choose>
+	  <c:when test="${not empty sessionScope.loggedInUser}">
+	      <div class="user-menu">
+	          <div class="user-icon">
+	              <img src="/images/user-icon.png" alt="User">
+	          </div>
 
-    <a href="/login" class="nav-btn">Login</a>
+	          <div class="user-dropdown">
+	              <a href="/profile">My Profile</a>
+	              <a href="/orders">Orders</a>
+	              <a href="/logout">Logout</a>
+	          </div>
+	      </div>
+	  </c:when>
+
+	  <c:otherwise>
+	      <a href="/login" class="nav-btn">Login</a>
+	  </c:otherwise>
+	</c:choose>
+
+
+
+
 
   </div>
 

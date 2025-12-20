@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.sg.Dao.OrderDao;
 import com.sg.model.CartItem;
+import com.sg.model.Order;
+import com.sg.model.OrderItem;
 import com.sg.model.Product;
+import com.sg.model.User;
+import com.sg.service.OrderService;
 import com.sg.service.ProductService;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,32 +27,67 @@ public class CartController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    OrderService orderService;
+    
+    @Autowired
+    OrderDao orderDao;
+    
     @GetMapping("/add-to-cart/{id}")
-    public String addToCart(@PathVariable Integer id,
-                            HttpSession session) {
+    public String addToCart(@PathVariable Integer id, HttpSession session) {
 
+       
         List<CartItem> cart =
-          (List<CartItem>) session.getAttribute("cart");
+                (List<CartItem>) session.getAttribute("cart");
 
+       
         if (cart == null) {
             cart = new ArrayList<>();
         }
 
         Product product = productService.getProductById(id);
 
-        if (product != null) {
-            cart.add(new CartItem(product, 1));
-            System.out.println("Product added: " + product.getName());
+       
+        if (product == null || product.getStock() <= 0) {
+            return "redirect:/products?outOfStock=true";
         }
 
+        
+        boolean found = false;
+
+        for (CartItem item : cart) {
+            if (item.getProduct().getId().equals(id)) {
+
+                
+                if (item.getQuantity() < product.getStock()) {
+                    item.setQuantity(item.getQuantity() + 1);
+                }
+
+                found = true;
+                break;
+            }
+        }
+
+        
+        if (!found) {
+            cart.add(new CartItem(product, 1));
+        }
+
+        
         session.setAttribute("cart", cart);
 
         return "redirect:/cart";
     }
 
 
+
     @GetMapping("/cart")
     public String showCart(HttpSession session, Model model) {
+
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login-page";
+        }
 
         List<CartItem> cart =
             (List<CartItem>) session.getAttribute("cart");
@@ -71,6 +111,11 @@ public class CartController {
     @GetMapping("/checkout")
     public String checkout(HttpSession session, Model model) {
 
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login-page";
+        }
+
         List<CartItem> cart =
             (List<CartItem>) session.getAttribute("cart");
 
@@ -88,17 +133,46 @@ public class CartController {
 
         return "checkout";
     }
+
     
+  
     @PostMapping("/place-order")
-    public String placeOrder(HttpSession session, Model model) {
+    public String placeOrder(HttpSession session) {
+
+        List<CartItem> cart =
+            (List<CartItem>) session.getAttribute("cart");
+
+        if (cart == null || cart.isEmpty()) {
+            return "redirect:/cart";
+        }
+
+        Order order = new Order();
+        order.setStatus("PLACED");
+
+        List<OrderItem> items = new ArrayList<>();
+        double total = 0;
+
+        for (CartItem c : cart) {
+            OrderItem oi = new OrderItem();
+            oi.setProductName(c.getProduct().getName());
+            oi.setPrice(c.getProduct().getPrice());
+            oi.setQuantity(c.getQuantity());
+
+            total += c.getProduct().getPrice() * c.getQuantity();
+            items.add(oi);
+        }
+
+        order.setItems(items);
+        order.setTotalAmount(total);
+
+        orderService.saveOrder(order);
 
         session.removeAttribute("cart");
 
-        model.addAttribute("msg", "Order placed successfully!");
-
-        return "order-success";
+        return "redirect:/orders";
     }
-    
+
+
     @GetMapping("/cart/increase/{id}")
     public String increaseQty(@PathVariable int id, HttpSession session) {
 

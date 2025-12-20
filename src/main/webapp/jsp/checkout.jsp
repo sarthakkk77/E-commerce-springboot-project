@@ -17,7 +17,7 @@
 
     <div class="checkout-container">
 
-        <!-- BILLING DETAILS -->
+      
         <form class="billing-card" method="post" action="/place-order">
 
             <h3>Billing Details</h3>
@@ -37,7 +37,7 @@
 
         </form>
 
-        <!-- ORDER SUMMARY -->
+     
         <div class="summary-card">
             <h3>Order Summary</h3>
 

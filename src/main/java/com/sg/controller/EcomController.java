@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 
-@Controller // pages
+@Controller 
 public class EcomController {
 	@Autowired
 	userService userService ;
@@ -56,21 +56,37 @@ public class EcomController {
 		userService.registerUser(user);
 		return "login";
 	}
-	 
+	
 	@PostMapping("/verify-login")
-	public String verifyLogin(String username, String password, Model model) {
+	public String verifyLogin(
+	        String email,
+	        String password,
+	        HttpSession session,
+	        Model model) {
 
-	    System.out.println("Login attempt: username=" + username + " password=" + password);
+	    User user = userService.verifyLogin(email, password);
 
-	    boolean isUserLoggedIn = userService.verifyLogin(username, password);
-
-	    if (isUserLoggedIn) {
-	        return "index";
+	    if (user != null) {
+	        session.setAttribute("loggedInUser", user);
+	        return "redirect:/";
 	    }
 
-	    model.addAttribute("error", "Invalid username or password!");
+	    model.addAttribute("error", "Invalid email or password");
 	    return "login";
 	}
+
+
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+
+	    
+	    session.invalidate();
+
+	   
+	    return "redirect:/";
+	}
+
 	
 
 

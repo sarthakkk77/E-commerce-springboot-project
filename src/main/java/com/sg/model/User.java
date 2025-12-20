@@ -2,6 +2,7 @@ package com.sg.model;
 
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class User {
 
     
     private String username;
+    
+    @Column(unique = true, nullable = false)
     private String email;
     private String mobile;
     private String password;

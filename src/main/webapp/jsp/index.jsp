@@ -17,7 +17,7 @@
 			  <div class="hero-content">
 			    <h1>Shop Smart.<br>Live Better.</h1>
 			    <p>Premium products. Trusted quality. Fast delivery across India.</p>
-			    <a href="/products" class="btn-primary">Start Shopping</a>
+			    <a href="/products" class="hero-btn"> Start Shopping →</a>
 			  </div>
 			  
 			  <div class="hero-image">
@@ -25,12 +25,56 @@
 			    </div>
 			</section>
 			
+			
+			<section class="stats-strip">
+			  <div class="stat-box">
+			    <h3>10K+</h3>
+			    <p>Happy Customers</p>
+			  </div>
+
+			  <div class="stat-box">
+			    <h3>500+</h3>
+			    <p>Premium Products</p>
+			  </div>
+
+			  <div class="stat-box">
+			    <h3>24×7</h3>
+			    <p>Customer Support</p>
+			  </div>
+
+			  <div class="stat-box">
+			    <h3>Fast</h3>
+			    <p>Delivery Across India</p>
+			  </div>
+			</section>
 			<section class="featured">
 			  <h2>Featured Products</h2>
 			  <p class="sub-text">Handpicked products just for you</p>
 
-			  <div class="featured-box">
-			    <p>More exciting products coming soon..</p>
+			  <div class="glass-card">
+				<div class="product-img">
+			      <img src="/images/wireless%20headphones.jpeg" alt="Product">
+			    </div>
+			    <h4>Wireless Headphones</h4>
+			    <span>₹1999</span>
+			  </div>
+			  
+			    <div class="glass-card">
+					<div class="product-img">
+			      <img src="/images/smart%20watch.jpeg" alt="Product">
+			      </div>
+				  <h4>Smart Watch</h4>
+			      <span>₹3499</span>
+			    </div>
+
+			    <div class="glass-card">
+					<div class="product-img">
+			      <img src="/images/bluetooth%20speaker.jpeg" alt="Product">
+				  </div>
+				  <h4>Bluetooth Speaker</h4>
+			      <span>₹2499</span>
+			    </div>
+
 			  </div>
 			</section>
 
